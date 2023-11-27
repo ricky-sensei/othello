@@ -16,20 +16,21 @@ window.onload = function(){
     // イベントを聞き取る人を追加するよ！
     $tableElements[$i].addEventListener("click", function(){
       // クリックしたいときに実行する内容
-      
-      // とりあえず石を置く
-      $tableElements[$i].innerText = turn;
 
-      console.log(right($tableElements, $i, turn))
+      if ($tableElements[$i].innerText == "") {
+        // とりあえず石を置く
+        $tableElements[$i].innerText = turn;
+        // 連石の数：後に置けるかどうかの判定に使う
+        right_chain = right($tableElements, $i, turn);
+        left_chain = left($tableElements, $i, turn);
+        
       
-      if (turn == Black) {
-        turn = White;
-      }else if (turn == White) {
-        turn = Black;
-      }else{
-        console.log("なんか変だよ");
+        if (turn == Black) {
+          turn = White;
+        }else if (turn == White) {
+          turn = Black;
+        }
       }
-      
     });
   }
 }
@@ -55,3 +56,24 @@ function right(table, i, turn){
     return 0;
   }
 }
+function left(table, i, turn){
+  var count = 1;
+  var stone = ""
+  if (turn == "●"){
+    stone = "〇";
+  }else{
+    stone = "●";
+  }
+  while(table[i - count].innerText == stone){
+    // table[i + count].innerText = turn;
+    count += 1;
+  }
+  if (table[i - count].innerText == turn){
+    for (let j = 1; j < count; j++) {
+      table[i - j].innerText = turn;
+    }
+  }else{
+    return 0;
+  }
+}
+
