@@ -23,6 +23,8 @@ window.onload = function(){
         // 連石の数：後に置けるかどうかの判定に使う
         right_chain = right($tableElements, $i, turn);
         left_chain = left($tableElements, $i, turn);
+        up_chain = up($tableElements, $i, turn);
+        down_chain = down($tableElements, $i, turn);
         
       
         if (turn == Black) {
@@ -76,4 +78,47 @@ function left(table, i, turn){
     return 0;
   }
 }
+function up(table, i, turn){
+  var count = 1;
+  var stone = ""
+  if (turn == "●"){
+    stone = "〇";
+  }else{
+    stone = "●";
+  }
+  console.log(stone)
+  while(table[i - (count*8)].innerText == stone){
+    // table[i + count].innerText = turn;
+    count += 1;
+  }
+  if (table[i - (count *8)].innerText == turn){
+    for (let j = 1; j < count; j++) {
+      table[i - (j*8)].innerText = turn;
+    }
+  }else{
+    return 0;
+  }
+}
+function down(table, i, turn){
+  var count = 1;
+  var stone = ""
+  if (turn == "●"){
+    stone = "〇";
+  }else{
+    stone = "●";
+  }
+  console.log(stone)
+  while(table[i +(count*8)].innerText == stone){
+    // table[i + count].innerText = turn;
+    count += 1;
+  }
+  if (table[i +(count *8)].innerText == turn){
+    for (let j = 1; j < count; j++) {
+      table[i +(j*8)].innerText = turn;
+    }
+  }else{
+    return 0;
+  }
+}
+
 
