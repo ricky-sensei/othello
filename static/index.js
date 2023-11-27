@@ -17,13 +17,10 @@ window.onload = function(){
     $tableElements[$i].addEventListener("click", function(){
       // クリックしたいときに実行する内容
       
+      // とりあえず石を置く
       $tableElements[$i].innerText = turn;
-      if ($tableElements[$i + 1].innerText != "" ){
-        if ($tableElements[$i + 1].innerText != turn){
-          console.log("右隣に相手の石があるよ");
-          console.log(right($tableElements, $i, turn));
-        }
-      }
+
+      console.log(right($tableElements, $i, turn))
       
       if (turn == Black) {
         turn = White;
@@ -37,21 +34,23 @@ window.onload = function(){
   }
 }
 
+
 function right(table, i, turn){
   var count = 1;
-  stone = ""
+  var stone = ""
   if (turn == "●"){
     stone = "〇";
   }else{
     stone = "●";
   }
   while(table[i + count].innerText == stone){
-    table[i + count].innerText = turn;
+    // table[i + count].innerText = turn;
     count += 1;
-    
   }
   if (table[i + count].innerText == turn){
-    return count - 1;
+    for (let j = 1; j < count; j++) {
+      table[i + j].innerText = turn;
+    }
   }else{
     return 0;
   }
