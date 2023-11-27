@@ -4,12 +4,9 @@ window.onload = function(){
   // ~という名前(name)のタグ（tag）の要素（element）をget=とってくるよ
   var $tableElements = document.getElementsByTagName("td");
   let order = true;
-  let White = "〇";
-  let Black = "●";
-  let turn = Black;
- 
-  
-
+  var White = "〇";
+  var Black = "●";
+  var turn = Black;
 
   for (let $i = 0; $tableElements.length; $i++){
     // add Event Listener
@@ -21,11 +18,17 @@ window.onload = function(){
         // とりあえず石を置く
         $tableElements[$i].innerText = turn;
         // 連石の数：後に置けるかどうかの判定に使う
-        right_chain = right($tableElements, $i, turn);
-        left_chain = left($tableElements, $i, turn);
-        up_chain = up($tableElements, $i, turn);
-        down_chain = down($tableElements, $i, turn);
-        
+
+        // 第三引数は方向（右：１、左：－１、上：－８、下：８）
+        right_chain = flip($tableElements, $i, turn, 1);
+        left_chain = flip($tableElements, $i, turn, -1);
+        up_chain = flip($tableElements, $i, turn, -8);
+        down_chain = flip($tableElements, $i, turn, 8);
+
+        if([right_chain, left_chain, up_chain, down_chain].toString() === [0, 0, 0, 0].toString()){
+          console.log("おけないよ");
+          // ここでbreakしたい
+        }
       
         if (turn == Black) {
           turn = White;
@@ -37,8 +40,7 @@ window.onload = function(){
   }
 }
 
-
-function right(table, i, turn){
+function flip(table, i, turn, direction){
   var count = 1;
   var stone = ""
   if (turn == "●"){
@@ -46,79 +48,15 @@ function right(table, i, turn){
   }else{
     stone = "●";
   }
-  while(table[i + count].innerText == stone){
+  while(table[i + (count* direction)].innerText == stone){
     // table[i + count].innerText = turn;
     count += 1;
   }
-  if (table[i + count].innerText == turn){
+  if (table[i + (count*direction)].innerText == turn){
     for (let j = 1; j < count; j++) {
-      table[i + j].innerText = turn;
+      table[i +(j*direction)].innerText = turn;
     }
   }else{
     return 0;
   }
 }
-function left(table, i, turn){
-  var count = 1;
-  var stone = ""
-  if (turn == "●"){
-    stone = "〇";
-  }else{
-    stone = "●";
-  }
-  while(table[i - count].innerText == stone){
-    // table[i + count].innerText = turn;
-    count += 1;
-  }
-  if (table[i - count].innerText == turn){
-    for (let j = 1; j < count; j++) {
-      table[i - j].innerText = turn;
-    }
-  }else{
-    return 0;
-  }
-}
-function up(table, i, turn){
-  var count = 1;
-  var stone = ""
-  if (turn == "●"){
-    stone = "〇";
-  }else{
-    stone = "●";
-  }
-  console.log(stone)
-  while(table[i - (count*8)].innerText == stone){
-    // table[i + count].innerText = turn;
-    count += 1;
-  }
-  if (table[i - (count *8)].innerText == turn){
-    for (let j = 1; j < count; j++) {
-      table[i - (j*8)].innerText = turn;
-    }
-  }else{
-    return 0;
-  }
-}
-function down(table, i, turn){
-  var count = 1;
-  var stone = ""
-  if (turn == "●"){
-    stone = "〇";
-  }else{
-    stone = "●";
-  }
-  console.log(stone)
-  while(table[i +(count*8)].innerText == stone){
-    // table[i + count].innerText = turn;
-    count += 1;
-  }
-  if (table[i +(count *8)].innerText == turn){
-    for (let j = 1; j < count; j++) {
-      table[i +(j*8)].innerText = turn;
-    }
-  }else{
-    return 0;
-  }
-}
-
-
